@@ -20,7 +20,7 @@ func TestDingTalk_Init(t *testing.T) {
 		wantErr bool
 	}{
 		// TODO: Add test cases.
-		{fields: fields{Token: "39587a4c5cd671e1f53ac706e96271eb3855f8c71c3b05f844efa8b3bf4da833", Sign: ""}},
+		{fields: fields{Token: "", Sign: ""}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
