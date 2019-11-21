@@ -37,7 +37,6 @@ Use "kubewatch [command] --help" for more information about a command.
 
 ```
 
-
 # Install
 
 ### Cluster Installation
