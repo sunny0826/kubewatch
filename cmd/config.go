@@ -94,5 +94,6 @@ func init() {
 		flockConfigCmd,
 		webhookConfigCmd,
 		msteamsConfigCmd,
+		dingtalkCmd,
 	)
 }

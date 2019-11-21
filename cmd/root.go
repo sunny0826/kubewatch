@@ -46,6 +46,7 @@ supported webhooks:
  - mattermost
  - flock
  - webhook
+ - dingtalk
 `,
 
 	Run: func(cmd *cobra.Command, args []string) {
