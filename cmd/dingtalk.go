@@ -1,5 +1,5 @@
 /*
-Copyright 2016 Skippbox, Ltd.
+Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,20 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 package cmd
 
 import (
 	"github.com/Sirupsen/logrus"
-	"github.com/bitnami-labs/kubewatch/config"
 	"github.com/spf13/cobra"
+	"github.com/sunny0826/kubewatch/config"
 )
 
-// hipchatConfigCmd represents the hipchat subcommand
-var hipchatConfigCmd = &cobra.Command{
-	Use:   "hipchat FLAG",
-	Short: "specific hipchat configuration",
-	Long:  `specific hipchat configuration`,
+// dingtalkCmd represents the dingtalk command
+var dingtalkCmd = &cobra.Command{
+	Use:   "dingtalk",
+	Short: "specific dingtalk configuration",
+	Long:  `specific dingtalk configuration`,
 	Run: func(cmd *cobra.Command, args []string) {
 		conf, err := config.New()
 		if err != nil {
@@ -36,18 +35,16 @@ var hipchatConfigCmd = &cobra.Command{
 		token, err := cmd.Flags().GetString("token")
 		if err == nil {
 			if len(token) > 0 {
-				conf.Handler.Hipchat.Token = token
+				conf.Handler.Dingtalk.Token = token
 			}
 		} else {
 			logrus.Fatal(err)
 		}
-		room, err := cmd.Flags().GetString("room")
+		sign, err := cmd.Flags().GetString("sign")
 		if err == nil {
-			if len(room) > 0 {
-				conf.Handler.Hipchat.Room = room
+			if len(sign) > 0 {
+				conf.Handler.Dingtalk.Sign = sign
 			}
-		} else {
-			logrus.Fatal(err)
 		}
 
 		if err = conf.Write(); err != nil {
@@ -57,7 +54,6 @@ var hipchatConfigCmd = &cobra.Command{
 }
 
 func init() {
-	hipchatConfigCmd.Flags().StringP("room", "r", "", "Specify hipchat room")
-	hipchatConfigCmd.Flags().StringP("token", "t", "", "Specify hipchat token")
-	hipchatConfigCmd.Flags().StringP("url", "u", "", "Specify hipchat server url")
+	dingtalkCmd.Flags().StringP("sign", "s", "", "Specify dingtalk sign")
+	dingtalkCmd.Flags().StringP("token", "t", "", "Specify dingtalk token")
 }

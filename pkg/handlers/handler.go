@@ -17,13 +17,14 @@ limitations under the License.
 package handlers
 
 import (
-	"github.com/bitnami-labs/kubewatch/config"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/flock"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/hipchat"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/mattermost"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/msteam"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/slack"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/webhook"
+	"github.com/sunny0826/kubewatch/config"
+	"github.com/sunny0826/kubewatch/pkg/handlers/flock"
+	"github.com/sunny0826/kubewatch/pkg/handlers/hipchat"
+	"github.com/sunny0826/kubewatch/pkg/handlers/mattermost"
+	"github.com/sunny0826/kubewatch/pkg/handlers/msteam"
+	"github.com/sunny0826/kubewatch/pkg/handlers/slack"
+	"github.com/sunny0826/kubewatch/pkg/handlers/webhook"
+	"github.com/sunny0826/kubewatch/pkg/handlers/dingtalk"
 )
 
 // Handler is implemented by any handler.
@@ -45,6 +46,7 @@ var Map = map[string]interface{}{
 	"flock":      &flock.Flock{},
 	"webhook":    &webhook.Webhook{},
 	"ms-teams":   &msteam.MSTeams{},
+	"dingtalk":   &dingtalk.DingTalk{},
 }
 
 // Default handler implements Handler interface,

@@ -19,15 +19,17 @@ package client
 import (
 	"log"
 
-	"github.com/bitnami-labs/kubewatch/config"
-	"github.com/bitnami-labs/kubewatch/pkg/controller"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/flock"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/hipchat"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/mattermost"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/msteam"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/slack"
-	"github.com/bitnami-labs/kubewatch/pkg/handlers/webhook"
+	"github.com/sunny0826/kubewatch/config"
+	//"github.com/sunny0826/kubewatch/config"
+	"github.com/sunny0826/kubewatch/pkg/controller"
+	"github.com/sunny0826/kubewatch/pkg/handlers"
+	"github.com/sunny0826/kubewatch/pkg/handlers/dingtalk"
+	"github.com/sunny0826/kubewatch/pkg/handlers/flock"
+	"github.com/sunny0826/kubewatch/pkg/handlers/hipchat"
+	"github.com/sunny0826/kubewatch/pkg/handlers/mattermost"
+	"github.com/sunny0826/kubewatch/pkg/handlers/msteam"
+	"github.com/sunny0826/kubewatch/pkg/handlers/slack"
+	"github.com/sunny0826/kubewatch/pkg/handlers/webhook"
 )
 
 // Run runs the event loop processing with given handler
@@ -54,6 +56,8 @@ func ParseEventHandler(conf *config.Config) handlers.Handler {
 		eventHandler = new(webhook.Webhook)
 	case len(conf.Handler.MSTeams.WebhookURL) > 0:
 		eventHandler = new(msteam.MSTeams)
+	case len(conf.Handler.Dingtalk.Token) > 0:
+		eventHandler = new(dingtalk.DingTalk)
 	default:
 		eventHandler = new(handlers.Default)
 	}
