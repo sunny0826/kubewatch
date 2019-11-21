@@ -202,6 +202,9 @@ func (c *Config) CheckMissingResourceEnvvars() {
 	if (c.Handler.Slack.Token == "") && (os.Getenv("SLACK_TOKEN") != "") {
 		c.Handler.Slack.Token = os.Getenv("SLACK_TOKEN")
 	}
+	if (c.Handler.Dingtalk.Token == "") && (os.Getenv("KW_DINGTALK_TOKEN") != "") {
+		c.Handler.Dingtalk.Token = os.Getenv("KW_DINGTALK_TOKEN")
+	}
 }
 
 func (c *Config) Write() error {

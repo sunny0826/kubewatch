@@ -25,7 +25,6 @@ import (
 	"github.com/sunny0826/dingtalk"
 
 	kbEvent "github.com/sunny0826/kubewatch/pkg/event"
-	//"github.com/sunny0826/kubewatch/config"
 	"github.com/sunny0826/kubewatch/config"
 )
 

@@ -20,7 +20,6 @@ import (
 	"log"
 
 	"github.com/sunny0826/kubewatch/config"
-	//"github.com/sunny0826/kubewatch/config"
 	"github.com/sunny0826/kubewatch/pkg/controller"
 	"github.com/sunny0826/kubewatch/pkg/handlers"
 	"github.com/sunny0826/kubewatch/pkg/handlers/dingtalk"
