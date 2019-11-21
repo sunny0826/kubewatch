@@ -21,22 +21,17 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-
 	"gopkg.in/yaml.v2"
 )
 
-// ConfigFileName stores file of config
 var ConfigFileName = ".kubewatch.yaml"
 
-// Handler contains handler configuration
 type Handler struct {
-	Slack      Slack      `json:"slack"`
-	Hipchat    Hipchat    `json:"hipchat"`
+	Slack Slack `json:"slack"`
+	Hipchat Hipchat `json:"hipchat"`
 	Mattermost Mattermost `json:"mattermost"`
-	Flock      Flock      `json:"flock"`
-	Webhook    Webhook    `json:"webhook"`
-	MSTeams    MSTeams    `json:"msteams"`
-	Dingtalk   Dingtalk   `json:"dingtalk"`
+	Flock Flock `json:"flock"`
+	Webhook Webhook `json:"webhook"`
 }
 
 // Resource contains resource configuration
@@ -49,9 +44,8 @@ type Resource struct {
 	Pod                   bool `json:"po"`
 	Job                   bool `json:"job"`
 	PersistentVolume      bool `json:"pv"`
-	Namespace             bool `json:"ns"`
+	Namespace	      bool `json:"ns"`
 	Secret                bool `json:"secret"`
-	ConfigMap             bool `json:"configmap"`
 	Ingress               bool `json:"ing"`
 }
 
@@ -60,9 +54,6 @@ type Config struct {
 	Handler Handler `json:"handler"`
 	//Reason   []string `json:"reason"`
 	Resource Resource `json:"resource"`
-	// for watching specific namespace, leave it empty for watching all.
-	// this config is ignored when watching namespaces
-	Namespace string `json:"namespace,omitempty"`
 }
 
 // Slack contains slack configuration
@@ -73,15 +64,15 @@ type Slack struct {
 
 // Hipchat contains hipchat configuration
 type Hipchat struct {
-	Token string `json:"token"`
-	Room  string `json:"room"`
-	Url   string `json:"url"`
+	Token   string `json:"token"`
+	Room string `json:"room"`
+	Url string `json:"url"`
 }
 
 // Mattermost contains mattermost configuration
 type Mattermost struct {
-	Channel  string `json:"room"`
-	Url      string `json:"url"`
+	Channel string `json:"room"`
+	Url string `json:"url"`
 	Username string `json:"username"`
 }
 
@@ -93,17 +84,6 @@ type Flock struct {
 // Webhook contains webhook configuration
 type Webhook struct {
 	Url string `json:"url"`
-}
-
-// MSTeams contains MSTeams configuration
-type MSTeams struct {
-	WebhookURL string `json:"webhookurl"`
-}
-
-// Dingtalk contains Dingtalk configuration
-type Dingtalk struct {
-	Token string `json:"token"`
-	Sign  string `json:"sign"`
 }
 
 // New creates new config object
@@ -158,7 +138,6 @@ func (c *Config) Load() error {
 	return nil
 }
 
-// CheckMissingResourceEnvvars will read the environment for equivalent config variables to set
 func (c *Config) CheckMissingResourceEnvvars() {
 	if !c.Resource.DaemonSet && os.Getenv("KW_DAEMONSET") == "true" {
 		c.Resource.DaemonSet = true
@@ -189,9 +168,6 @@ func (c *Config) CheckMissingResourceEnvvars() {
 	}
 	if !c.Resource.Secret && os.Getenv("KW_SECRET") == "true" {
 		c.Resource.Secret = true
-	}
-	if !c.Resource.ConfigMap && os.Getenv("KW_CONFIGMAP") == "true" {
-		c.Resource.ConfigMap = true
 	}
 	if !c.Resource.Ingress && os.Getenv("KW_INGRESS") == "true" {
 		c.Resource.Ingress = true
@@ -228,10 +204,6 @@ func getConfigFile() string {
 }
 
 func configDir() string {
-	if configDir := os.Getenv("KW_CONFIG"); configDir != "" {
-		return configDir
-	}
-
 	if runtime.GOOS == "windows" {
 		home := os.Getenv("USERPROFILE")
 		return home
