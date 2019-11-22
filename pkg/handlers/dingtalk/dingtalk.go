@@ -24,14 +24,20 @@ import (
 
 	"github.com/sunny0826/dingtalk"
 
-	kbEvent "github.com/sunny0826/kubewatch/pkg/event"
 	"github.com/sunny0826/kubewatch/config"
+	kbEvent "github.com/sunny0826/kubewatch/pkg/event"
 )
 
 var dingColors = map[string]string{
 	"Normal":  "#67C23A",
 	"Warning": "#E6A23C",
 	"Danger":  "#F56C6C",
+}
+
+var cnAction = map[string]string{
+	"created": "新建",
+	"deleted": "删除",
+	"updated": "更新",
 }
 
 var dingErrMsg = `
@@ -56,6 +62,8 @@ type DingTalk struct {
 type DingContent struct {
 	Title   string `json:"title"`
 	Message string `json:"message"`
+	Action  string `json:"action"`
+	Kind    string `json:"kind"`
 }
 
 // Init prepares slack configuration
@@ -99,6 +107,8 @@ func (d *DingTalk) TestHandler() {
 	content := DingContent{
 		Title:   "kubewatch",
 		Message: "Testing Handler Configuration. This is a Test message.",
+		Kind:    "test",
+		Action:  "created",
 	}
 
 	color := dingColors["Normal"]
@@ -122,7 +132,9 @@ func notifySlack(d *DingTalk, obj interface{}, action string) {
 
 	content := DingContent{
 		Title:   "kubewatch",
-		Message: e.Message(),
+		Message: e.DingMessage(),
+		Action:  e.Reason,
+		Kind:    e.Kind,
 	}
 
 	color := dingColors[e.Status]
@@ -152,12 +164,12 @@ func (s *DingContent) sendDingContent(color string) string {
 	var tpl string
 
 	// title
-	title := fmt.Sprintf("<font color=%s>%s</font>", color, s.Title)
+	title := fmt.Sprintf("<font color=%s>%s-%s</font>", color, s.Kind, cnAction[s.Action])
 	tpl = fmt.Sprintf("# %s \n", title)
 
 	// message
-	message := fmt.Sprintf("%s", s.Message)
-	tpl += message + "\n"
+	message := fmt.Sprintf("%s \n", s.Message)
+	tpl += message
 
 	return tpl
 }

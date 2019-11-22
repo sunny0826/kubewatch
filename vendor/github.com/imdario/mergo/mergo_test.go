@@ -666,10 +666,10 @@ type structWithUnexportedProperty struct {
 
 func TestUnexportedProperty(t *testing.T) {
 	a := structWithMap{map[string]structWithUnexportedProperty{
-		"key": {"hello"},
+		"key": structWithUnexportedProperty{"hello"},
 	}}
 	b := structWithMap{map[string]structWithUnexportedProperty{
-		"key": {"hi"},
+		"key": structWithUnexportedProperty{"hi"},
 	}}
 	defer func() {
 		if r := recover(); r != nil {

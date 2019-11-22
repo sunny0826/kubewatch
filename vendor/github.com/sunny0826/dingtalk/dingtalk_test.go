@@ -21,22 +21,22 @@ import (
 )
 
 func TestWebHook(t *testing.T) {
-	webHook := NewWebHook("39587a4c5cd671e1f53ac706e96271eb3855f8c71c3b05f844efa8b3bf4da833", "")
+	webHook := NewWebHook("foo", "bar")
 
 	// test send text message
-	//err := webHook.SendTextMsg("Test text message", false, "")
-	//if nil != err {
-	//	t.Error("token missing error should be catch!")
-	//}
-	//
-	//// test send link message
-	//err = webHook.SendLinkMsg("A link message", "Click me to baidu search", "", "https://www.baidu.com")
-	//if nil != err {
-	//	t.Error("token missing error should be catch!")
-	//}
+	err := webHook.SendTextMsg("Test text message", false, "")
+	if nil != err {
+		t.Error("token missing error should be catch!")
+	}
+
+	// test send link message
+	err = webHook.SendLinkMsg("A link message", "Click me to baidu search", "", "https://www.baidu.com")
+	if nil != err {
+		t.Error("token missing error should be catch!")
+	}
 
 	// test send markdown message
-	err := webHook.SendMarkdownMsg("A markdown message", "# This is title \n > Hello World", false, "13800138000")
+	err = webHook.SendMarkdownMsg("A markdown message", "# This is title \n > Hello World", false, "13800138000")
 	if nil != err {
 		t.Error("token missing error should be catch!")
 	}

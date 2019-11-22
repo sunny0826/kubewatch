@@ -15,12 +15,12 @@ package event
 
 import (
 	"fmt"
-
 	"github.com/sunny0826/kubewatch/pkg/utils"
 	apps_v1beta1 "k8s.io/api/apps/v1beta1"
 	batch_v1 "k8s.io/api/batch/v1"
 	api_v1 "k8s.io/api/core/v1"
 	ext_v1beta1 "k8s.io/api/extensions/v1beta1"
+	"strings"
 )
 
 // Event represent an event got from k8s api server
@@ -40,6 +40,18 @@ var m = map[string]string{
 	"created": "Normal",
 	"deleted": "Danger",
 	"updated": "Warning",
+}
+
+var dingColors = map[string]string{
+	"Normal":  "#67C23A",
+	"Warning": "#E6A23C",
+	"Danger":  "#F56C6C",
+}
+
+var cnAction = map[string]string{
+	"created": "新建",
+	"deleted": "删除",
+	"updated": "更新",
 }
 
 // New create new KubewatchEvent
@@ -115,6 +127,40 @@ func (e *Event) Message() (msg string) {
 			e.Namespace,
 			e.Reason,
 			e.Name,
+		)
+	}
+	return msg
+}
+
+// DingTalk Message returns event message in standard format.
+func (e *Event) DingMessage() (msg string) {
+	switch e.Kind {
+	case "namespace":
+		msg = fmt.Sprintf(
+			"<font color=%s>%s</font> 了一个名为 **%s** 的 namespace",
+			dingColors[e.Status],
+			e.Name,
+			cnAction[e.Reason],
+		)
+	default:
+		var kNamespace string
+		var kName string
+		if e.Reason == "created" {
+			kNamespace = e.Namespace
+			kName = e.Name
+		} else {
+			nameRes := strings.Split(e.Name, "/")
+			kNamespace = nameRes[0]
+			kName = nameRes[1]
+
+		}
+		msg = fmt.Sprintf(
+			"> namespace: **%s** \n\n <font color=%s>%s</font> %s: **%s**",
+			kNamespace,
+			dingColors[e.Status],
+			e.Reason,
+			e.Kind,
+			kName,
 		)
 	}
 	return msg
